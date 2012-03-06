@@ -1,6 +1,6 @@
 ## Backbone.Rpc
 
-#### Plugin for using the backbone js library with a remote json-rpc handler instead of the default REST one 
+#### Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
 
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
@@ -27,13 +27,15 @@ require(['path/to/backbone.rpc'], function (Backbone) {
 var Backbone = require('path/to/backbone.rpc');
 ```
 ```html
+<!-- Vanilla javascript -->
 <script src="path/to/backbone.rpc"></script>
 <script>
-	console.log(Backbone.Rpc); // Works
+	console.log(Backbone.Rpc); // Backbone and the Rpc property are globals
 </script>
 ```
 
 ## License & Getting Involved
+Copyright (c) Sebastian Golasch
 
 The plugin is released under the MIT License. Feel free to add and/or modify
 it´s contents. If you<br />

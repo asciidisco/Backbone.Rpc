@@ -47,6 +47,8 @@
     var Rpc = function (options) {
             // merge the users options
             this.options = options !== undef ? options : {};
+            // check if we have a non std. namespace delimter
+            this.namespaceDelimiter = options !== undef && options.namespaceDelimiter !== undef ? options.namespaceDelimiter : this.namespaceDelimiter;
             // fix issue with the loss of this
             _.bindAll(this);
         },
@@ -131,10 +133,11 @@
 
         // TODO: Document
         query: function (fn, params, callback, error) {
-            this.responseID = String((new Date()).getTime());
+            var id = String((new Date()).getTime());
+            this.responseID = id;
             // generate unique request id (timestamp)
             // check if params and the function name are ok, then...
-            if ('object' == typeof params && _.isString(fn)) {
+            if (_.isArray(params) && _.isString(fn)) {
                 // send query
                 return $.ajax({
                     contentType : 'application/x-www-form-urlencoded; charset=' + this.charset,
@@ -144,7 +147,7 @@
                     data        : JSON.stringify({
                         jsonrpc : '2.0',
                         method  : this.namespace + this.namespaceDelimiter + fn,
-                        id      : this.responseID,
+                        id      : id,
                         params  : params
                     }),
                     statusCode  : {
@@ -152,10 +155,16 @@
                         500: _.bind(function () { this.handleExceptions(this.exceptions['500']); }, this)
                     },
                     success: _.bind(function (data, status, response) {
-                        this.onSuccess(callback, this.responseID, data, status, response); 
+                        if (data !== null && data.error !== undef) {
+                            this.onError(callback, data, status, response); 
+                        } else {
+                            this.onSuccess(callback, id, data, status, response); 
+                        }
                     }, this),
-                    error: _.bind(function (data, status, response) {
-                        this.onError(callback, data, status, response); 
+                    error: _.bind(function (jXhr, status, response) {
+                        if (jXhr.status !== 404 && jXhr.status !== 500) {
+                            this.onError(callback, jXhr, status, response); 
+                        }
                     }, this)
                 });
             } else {
@@ -176,7 +185,7 @@
 
             // check if we have a proper method for the model
             if (!_.isArray(model.methods[method]) && !_.isFunction(model.methods[method])) {
-                return ecb(this.exceptions.renderError('Could not find ' + method + ' in model.methods'));
+                return this.handleExceptions(this.exceptions.typeMissmatch);
             }
 
             // execute function if it´s one, else, assign array
@@ -242,11 +251,11 @@
         // TODO: Document
         invoke: function (method, model, options) {
             var defOpts = {
-                success: function () {
-                    model.trigger('change:' + method, model);
+                success: function (result) {
+                    model.trigger('called:' + method, model, result);
                     // check for a manually success callback
                     if (options !== undef && _.isFunction(options.success)) {
-                        options.success(model);
+                        options.success(model, result);
                     }
                 },
                 error: function (model, error) {
@@ -289,7 +298,7 @@
                 // walk through the methods 
                 _.each(this.methods, _.bind(function (method, signature) {
                     // check if we have a 'non standard' signature
-                    if ({'read': 1, 'create': 1, 'remove': 1, 'update': 1}[signature] !== undef) {
+                    if ({'read': 1, 'create': 1, 'remove': 1, 'update': 1}[signature] !== 1) {
                         // generate the method for the signature
                         this[signature] = _.bind(function (options) {
                             // invoke the dynamicly created method
