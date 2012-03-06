@@ -20,9 +20,9 @@ require(['path/to/publisher'], function (publisher) {
 ## License & Getting Involved
 
 The plugin is released under the MIT License. Feel free to add and/or modify
-it´s contents. If you
-- found a bug
-- want to add something nice
-- have questions
+it´s contents. If you<br />
+- found a bug<br />
+- want to add something nice<br />
+- have questions<br />
 
 feel free to contact me.
