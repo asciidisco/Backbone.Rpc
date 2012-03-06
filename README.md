@@ -11,10 +11,26 @@ backbone request handling.
 
 ## Usage
 
+The plugin itself implements the Universal Module Definition (UMD).
+You can use it with a CommonJS like loader, or with an AMD loader or via
+a vanilla javascript.
+
+The plugin itself has three dependencies, underscore.js, jQuery and backbone.js
+
 ```javascript
-require(['path/to/publisher'], function (publisher) {
-  /* Do stuff with publisher here */
+// AMD
+require(['path/to/backbone.rpc'], function (Backbone) {
+  /* Do stuff with Backbone here */
 });
+
+// CommonJS
+var Backbone = require('path/to/backbone.rpc');
+```
+```html
+<script src="path/to/backbone.rpc"></script>
+<script>
+	console.log(Backbone.Rpc); // Works
+</script>
 ```
 
 ## License & Getting Involved
