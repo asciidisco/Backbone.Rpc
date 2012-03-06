@@ -5,9 +5,9 @@
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
 rusty old Java devs. This happend to me when I created this plugin.
-Instead of using a nice RESTful interface, the backend guys came around with an
+Instead of using a nice RESTful interface, the backend guys came around with a
 json-rpc 2.0 implementation. It was clearly unusable with the default
-backbone request handling. So I created this little plugin.
+backbone request handling.
 
 ## Usage
 
