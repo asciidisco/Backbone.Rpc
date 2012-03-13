@@ -1,9 +1,18 @@
-[submodule "test/qunit"]
-	path = test/qunit
+[submodule "vendor/qunit"]
+	path = vendor/qunit
 	url = git://github.com/jquery/qunit.git
-[submodule "test/qunit-logging"]
-	path = test/qunit-logging
+[submodule "vendor/qunit-logging"]
+	path = vendor/qunit-logging
 	url = git://github.com/keithamus/qunit-logging
-[submodule "qunit"]
-	path = qunit
-	url = git://github.com/asynchrony/qunit.git
+[submodule "vendor/jquery"]
+	path = vendor/jquery
+	url = git://github.com/jquery/jquery.git
+[submodule "vendor/underscore"]
+	path = vendor/underscore
+	url = git://github.com/documentcloud/underscore.git
+[submodule "vendor/backbone"]
+	path = vendor/backbone
+	url = git://github.com/documentcloud/backbone.git
+[submodule "vendor/sinon-web"]
+	path = vendor/sinon-web
+	url = git://github.com/cjohansen/sinon-web.git

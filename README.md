@@ -2,6 +2,10 @@
 
 #### Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
 
+## Build Status
+
+[![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)
+
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
 rusty old Java devs. This happend to me when I created this plugin.
