@@ -579,7 +579,6 @@ test("can operate multiple methods", function () {
     requests.push(xhr);
   };
   this.errors = [];
-  //server = sinon.fakeServer.create();
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),      
@@ -615,7 +614,6 @@ test("can operate multiple methods (namespaced)", function () {
     requests.push(xhr);
   };
   this.errors = [];
-  //server = sinon.fakeServer.create();
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
