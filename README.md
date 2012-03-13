@@ -28,7 +28,10 @@ var Backbone = require('path/to/backbone.rpc');
 ```
 ```html
 <!-- Vanilla javascript -->
-<script src="path/to/backbone.rpc"></script>
+<script src="path/to/jquery.js"></script>
+<script src="path/to/underscore.js"></script>
+<script src="path/to/backbone.js"></script>
+<script src="path/to/backbone.rpc.js"></script>
 <script>
 	console.log(Backbone.Rpc); // Backbone and the Rpc property are globals
 </script>
