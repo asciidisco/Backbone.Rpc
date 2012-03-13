@@ -6,6 +6,14 @@
 
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)
 
+## Anotated Source Code && Tests
+
+Docco docs:
+http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html
+
+QUnit tests:
+http://asciidisco.github.com/Backbone.Rpc/tests/index.html
+
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
 rusty old Java devs. This happend to me when I created this plugin.
