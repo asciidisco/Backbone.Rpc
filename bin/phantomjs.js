@@ -1,6 +1,6 @@
 var fs = require('fs'),
     page = new WebPage(),
-    file = fs.absolute('/test/index.html');
+    file = fs.absolute('test/index.html');
 
 page.onConsoleMessage = function(msg) {
     console.log(msg);
