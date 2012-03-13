@@ -1,6 +1,6 @@
 var fs = require('fs'),
     page = new WebPage(),
-    file = fs.absolute('test/index.html');
+    file = fs.absolute('/test/index.html');
 
 page.onConsoleMessage = function(msg) {
     console.log(msg);
@@ -15,6 +15,7 @@ page.onConsoleMessage = function(msg) {
 };
 
 page.open('file://' + file, function (status) {
+    console.log(status);
     if (status !== 'success') {
         console.log('FAIL to load the address');
         phantom.exit(1);
