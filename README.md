@@ -12,7 +12,7 @@ Docco docs:
 http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html
 
 QUnit tests:
-http://asciidisco.github.com/Backbone.Rpc/tests/index.html
+http://asciidisco.github.com/Backbone.Rpc/test/index.html
 
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
