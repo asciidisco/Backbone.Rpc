@@ -2,7 +2,7 @@
 Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
 
 ## Build Status, Project Page, Annotated Source & Tests
-[![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br />
+[![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br /><br />
 [Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)<br />
 [Docs](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)<br />
 [Tests](http://asciidisco.github.com/Backbone.Rpc/test/index.html)
@@ -125,9 +125,9 @@ var DeviceModel = Backbone.Model.extend({
 	rpc: new Backbone.Rpc(),
 	methods: {
 	    read            : ['getFilteredDevicesById', 'id'],
-	    create          : ['addDevice', 'Name'],
+	    create          : ['addDevice', 'name'],
 	    remove          : ['deleteDevice', 'id'],
-	    update          : ['setDeviceName', 'id', 'Name'],
+	    update          : ['setDeviceName', 'id', 'name'],
 	    addDeviceToRoom : ['setRoomForDevice' , 'id', 'roomId']
 	}
 });
@@ -179,7 +179,7 @@ we see what this will change:
 deviceModel.set({id: 14});
 deviceModel.fetch(); // Calls 'read'
 
-// Request from the 'read' call
+// Request created by the 'read' call
 {"jsonrpc":"2.0","method":"getFilteredDevicesById","id":"1331724849298","params":["14"]}:
 ```
 Hopefully you noticed that the contents of the 'id' attribute are applied as part of the 
@@ -188,12 +188,56 @@ params array in the response.
 As seen in the update call, you can add as many as params as you like:
 
 ```javascript
-update: ['setDeviceName', 'id', 'Name']
+update: ['setDeviceName', 'id', 'name']
 ```
 
 ### Fire multiple RPC calls with one method call 
+Sometimes we need to do more then one remote method call when we operate on an entity.
+Using our device example, we can say that every time a device will be created we need
+to reset the server side device cache.
 
+Sure we could accomplish that by adding an 'invalidateCache' method to our model
+and calling it manually, every time a device will be updated. But that´s error prone.
+Luckily, we have a simple pattern to accomplish this.
 
+```javascript
+var DeviceModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+		// ...
+	    create: [
+	    	['addDevice', 'name'], 
+	    	['invalidateCache']
+	    ]
+	    // ...
+	}
+});
+
+var deviceModel = new DeviceModel();
+deviceModel.save({name: 'My new device'});
+```
+This results in two simultanious POST requests against the rpc handler.
+
+```javascript
+// Creates the device
+{"jsonrpc":"2.0","method":"addDevice","id":"1331724850010","params":["My new device"]}:
+
+// Invalidates the cache
+{"jsonrpc":"2.0","method":"invalidateCache","id":"1331724850020","params":[]}:
+```
+
+### Dynamicly created request methods
+
+### Parsers
+
+### Collections
+
+### Namespace
+
+### Exceptions 
+
+### Build on the shoulder of giants
 
 ## License
 Copyright (c) Sebastian Golasch ([@asciidisco](https://twitter.com/#!/asciidisco)) 2012
