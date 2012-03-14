@@ -58,14 +58,27 @@ var Backbone = require('path/to/backbone.rpc');
 
 ### Basic usage
 ```javascript
-	var Model = Backbone.Model.extend({
-		url: 'path/to/my/rpc/handler',
-		rpc: new Backbone.Rpc(),
-		methods: {
-			remove:  ['deleteText', 'id']
-		}
-	});
+var TextModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+		read:  ['getRandomTextSnippet']
+	}
+});
+
+// server will respond on calling the 'getRandomTextSnippet' method
+// with the following json:
+// {id: 1, text: 'Loaded remotly'}
+
+var textModel = new TextModel();
+textmodel.fetch({success: function () {
+	textmodel.get('text'); //= 'Loaded remotly' 
+}});
+
 ```
+
+So, what happend here?!
+
 
 ## License
 Copyright (c) Sebastian Golasch 2012
