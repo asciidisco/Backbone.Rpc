@@ -292,6 +292,7 @@ var DeviceModel = Backbone.Model.extend({
 	},
 	parsers: {
 		addDeviceToRoom: function (model, result) {
+			console.log(resutl); // {roomName: 'Living Room'}
 			if (result.roomName) {
 				model.set({roomName: result.roomName});
 			}
@@ -301,16 +302,110 @@ var DeviceModel = Backbone.Model.extend({
 
 var deviceModelThree = new DeviceModel();
 deviceModel.set({id: 10, roomId: 12});
-deviceModel.addDeviceToRoom();
+deviceModel.addDeviceToRoom({success: function () {
+	deviceModel.get('roomName'); // 'Living Room'	
+}});
 
-deviceModel.get('roomName'); // 'Living Room'
 ```
 
 ### Collections
+You can add the Rpc functionality to Collections.
+Be aware that only fetching / reading makes sense there (My opinion, proof me wrong).
+
+```javascript
+var Devices = Backbone.Collection.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	model: Device,
+	methods: {
+	    read : ['getDevices']
+	}
+});
+
+var devices = new Devices();
+devices.fetch();
+```
 
 ### Namespaces
+Most of the time, you´re in need to call methods within a namespace.
+No worries, we thought of that too.
+
+```javascript
+var TextModel = Backbone.Model.extend({
+	namespace: 'MySuperEnterprisyNamespace',
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+		read:  ['getRandomTextSnippet']
+	}
+});
+
+// Fetch a random text snippet
+var textModel = new TextModel();
+textModel.fetch();
+
+// Will fire this request
+{"jsonrpc":"2.0","method":"MySuperEnterprisyNamespace/getRandomTextSnippet","id":"1331724850010","params":[]}:
+```
+
+By the way, you´re not tied to the default namespace separator, you can add you´re
+own easily:
+
+ ```javascript
+var TextModel = Backbone.Model.extend({
+	namespace: 'MySuperEnterprisyNamespace',
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc({
+		namespaceSeparator: '::'
+	}),
+	methods: {
+		read:  ['getRandomTextSnippet']
+	}
+});
+
+// Fetch a random text snippet
+var textModel = new TextModel();
+textModel.fetch();
+
+// Will fire this request
+{"jsonrpc":"2.0","method":"MySuperEnterprisyNamespace::getRandomTextSnippet","id":"1331724850010","params":[]}:
+```
+
+Nice, hah?!
 
 ### Exceptions 
+When working with a JSON RPC Service you can encounter different types of errors.
+The default error handler simply throws if something bad happens.
+
+##### We have a predefined list of errors:
+
++ 404: {code: -1, message: '404'}
++ 500: {code: -2, message: '500'}
++ typeMissmatch: {code: -3, message: 'Type missmatch'}
++ badResponseId: {code: -4, message: 'Bad response ID'}
++ noResponse: {code: -5, message: 'No response'}
+
+Also, there´s always the possibility for setting custom errors.
+Due to the spec, this is done via an error property in the json response
+instead of an result property. Backbone.Rpc recognizes that errors and
+then triggers the error handler (as said, default one throws).
+
+To prevent Backbone.Rpc from throwing errors, you can add you´re custom
+error handler.
+
+ ```javascript
+var TextModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc({
+		errorHandler: function (error) {
+			console.log('Code: ' + error.code + ' Message: ' + error.message);
+		}
+	}),
+	methods: {
+		read:  ['getRandomTextSnippet']
+	}
+});
+```
 
 ## TODO
 
@@ -328,6 +423,19 @@ deviceModel.get('roomName'); // 'Living Room'
 -
 
 ## Build on the shoulder of giants
+Thanks to all the great people behind the following projects, 
+who helped me with developing this one:
+
+[jQuery](http://jquery.com)<br />
+[backbone](http://backbonejs.org/))<br />
+[underscore](http://underscorejs.org/))<br />
+[PhantomJS](http://www.phantomjs.org/))<br />
+[Travis CI](http://travis-ci.org/))<br />
+[QUnit](http://docs.jquery.com/QUnit))<br />
+[Sinon](http://sinonjs.org/))<br />
+[Cake](http://coffeescript.org/))<br />
+[Uglify](https://github.com/mishoo/UglifyJS))<br />
+[DocumentUp](http://documentup.com/)
 
 ## License
 Copyright (c) Sebastian Golasch ([@asciidisco](https://twitter.com/#!/asciidisco)) 2012
