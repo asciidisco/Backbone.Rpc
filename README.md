@@ -55,8 +55,16 @@ var Backbone = require('path/to/backbone.rpc');
 ```
 
 ## Usage
-```javascript
 
+### Basic usage
+```javascript
+	var Model = Backbone.Model.extend({
+		url: 'path/to/my/rpc/handler',
+		rpc: new Backbone.Rpc(),
+		methods: {
+			remove:  ['deleteText', 'id']
+		}
+	});
 ```
 
 ## License
