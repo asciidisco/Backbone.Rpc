@@ -83,9 +83,11 @@ So, what happend here?!
 
 We added a new Backbone.Rpc instance as an indicator, that this model will use
 the Backbone.Rpc.Sync function to communicate with the Server.
+
 ```javascript
 rpc: new Backbone.Rpc(),
 ```
+
 Then, we told the Rpc plugin that we wan´t to map the Backbones fetch method
 to the remote method 'getRandomTextSnippet':
 
@@ -96,6 +98,7 @@ methods: {
 ```
 
 This results in the following POST Request:
+
 ```javascript
 {"jsonrpc":"2.0","method":"getRandomTextSnippet","id":"1331724849238","params":[]}:
 ```
