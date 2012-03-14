@@ -150,7 +150,7 @@ You can call it directly!
 ```javascript
 deviceModel.addDeviceToRoom(); // Calls 'addDeviceToRoom'
 
-// This methods acts like all the other methods, so you can do options:
+// This methods acts like all the other methods, so you can use options:
 deviceModel.addDeviceToRoom({success: function { ... }, error: function () { ... }});
 
 // And you can bind events
@@ -158,7 +158,29 @@ deviceModel.bind('call:addDeviceRoom', function () { ... });
 ```
 
 ### Adding params to the methods
+You might wonder what that snd. array entry 'id' in our 'read' method is?!
 
+```javascript
+read: ['getFilteredDevicesById', 'id'],
+```
+It´s a placeholder for a param property.
+If we take a closer look at the Request from the 'Basic Usage' example,
+we see an empty params array.
+
+```javascript
+{"jsonrpc":"2.0","method":"getRandomTextSnippet","id":"1331724849238","params":[]}:
+```
+
+If we now do the following and take a look at the request, our current example creates,
+we see what this will do to our request:
+
+```javascript
+deviceModel.set({id: 14});
+deviceModel.fetch(); // Calls 'read'
+
+// Request from the 'read' call
+{"jsonrpc":"2.0","method":"getFilteredDevicesById","id":"1331724849298","params":["14"]}:
+```
 
 ## License
 Copyright (c) Sebastian Golasch (@asciidisco) 2012
