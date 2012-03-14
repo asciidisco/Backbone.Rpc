@@ -107,18 +107,46 @@ According to the JSON RPC Version 2 Specs, the Server will respond
 with something like this:
 
 ```javascript
-{"id":"1331724849428","result":{"id": "12", "headline": "A remote headline", "text": "Loaded remotly"},"jsonrpc":"2.0"}
+{"id":"1331724849238","result":{"id": "12", "headline": "A remote headline", "text": "Loaded remotly"},"jsonrpc":"2.0"}
 ```
 
 Backbone.Rpc will now take this Response and convert it to smth. Backbones "normal"
 response parser and model attribute mapping engine can understand.
 
-## API
+### Mapping more then one method
 
-### Mapping of methods
+If you have more then one method to map (e.g. complete CRUD plus some other stuff)
+you can define them as follows:
+
+```javascript
+var TextModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+	    read            : ['getFilteredDevicesById', 'id'],
+	    create          : ['addDevice', 'Name'],
+	    remove          : ['deleteDevice', 'id'],
+	    update          : ['setDeviceName', 'id', 'Name'],
+	    addDeviceToRoom : ['setRoomForDevice' , 'id', 'roomId']
+	}
+});
+```
+
+Here we have five methods. The first four (read, create, remove, update) will be mapped
+to the corresponding Backbone methods.
+
+Example:
+```javascript
+textmodel.fetch(); // Calls 'read'
+textmodel.save(); // Calls 'create'
+textmodel.save({id: 12}); // Calls 'update'
+textmodel.destroy(); // Calls 'remove'
+```
+
+
 
 ## License
-Copyright (c) Sebastian Golasch 2012
+Copyright (c) Sebastian Golasch (@asciidisco) 2012
 
 The plugin is released under the MIT License. Feel free to add and/or modify
 it´s contents. Feel free to contact me if you have any questions.
