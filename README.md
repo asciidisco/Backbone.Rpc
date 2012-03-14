@@ -1,17 +1,10 @@
 ## Backbone.Rpc
+Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
 
-#### Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
-
-## Build Status
-
+## Build Status, Anotated Source Code & Tests
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)
-
-## Anotated Source Code && Tests
-
-### Docco docs
+[Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)
 [Docs](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)
-
-### QUnit tests
 [Tests](http://asciidisco.github.com/Backbone.Rpc/test/index.html)
 
 ## Introduction
@@ -30,9 +23,9 @@ a vanilla javascript.
 The plugin itself has three dependencies, underscore.js, jQuery and backbone.js
 
 You can directly download the 
-[Development Version](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)
+[Development Version](https://raw.github.com/asciidisco/Backbone.Rpc/master/backbone.rpc.js)
 or the
-[Production Version](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)
+[Production Version](https://raw.github.com/asciidisco/Backbone.Rpc/master/backbone.rpc.min.js)
 from the root folder
 
 ### AMD
@@ -61,13 +54,13 @@ var Backbone = require('path/to/backbone.rpc');
 </script>
 ```
 
+## Usage
+```javascript
+
+```
+
 ## License
 Copyright (c) Sebastian Golasch 2012
 
 The plugin is released under the MIT License. Feel free to add and/or modify
-it´s contents. If you<br />
-- found a bug<br />
-- want to add something nice<br />
-- have questions<br />
-
-feel free to contact me.
+it´s contents. Feel free to contact me if you have any questions.
