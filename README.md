@@ -67,18 +67,52 @@ var TextModel = Backbone.Model.extend({
 });
 
 // server will respond on calling the 'getRandomTextSnippet' method
-// with the following json:
-// {id: 1, text: 'Loaded remotly'}
+// with the following data:
+// {id: 12, headline: 'A remote headline', text: 'Loaded remotly'}
 
 var textModel = new TextModel();
 textmodel.fetch({success: function () {
-	textmodel.get('text'); //= 'Loaded remotly' 
+	textmodel.get('text'); //= 'Loaded remotly'
+	textmodel.get('id'); //= 12
+	textmodel.get('headline'); //= 'A remote headline'
 }});
 
 ```
 
 So, what happend here?!
 
+We added a new Backbone.Rpc instance as an indicator, that this model will use
+the Backbone.Rpc.Sync function to communicate with the Server.
+```javascript
+rpc: new Backbone.Rpc(),
+```
+Then, we told the Rpc plugin that we wan´t to map the Backbones fetch method
+to the remote method 'getRandomTextSnippet':
+
+```javascript
+methods: {
+	read:  ['getRandomTextSnippet']
+}
+```
+
+This results in the following POST Request:
+```javascript
+{"jsonrpc":"2.0","method":"getRandomTextSnippet","id":"1331724849238","params":[]}:
+```
+
+According to the JSON RPC Version 2 Specs, the Server will respond
+with something like this:
+
+```javascript
+{"id":"1331724849428","result":{"id": "12", "headline": "A remote headline", "text": "Loaded remotly"},"jsonrpc":"2.0"}
+```
+
+Backbone.Rpc will now take this Response and convert it to smth. Backbones "normal"
+response parser and model attribute mapping engine can understand.
+
+## API
+
+### Mapping of methods
 
 ## License
 Copyright (c) Sebastian Golasch 2012
