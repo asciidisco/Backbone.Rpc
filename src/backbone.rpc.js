@@ -175,7 +175,7 @@
                     });
                 }
                 storage[model.get('_rpcId')] = model.toJSON();
-                definition = model.methods[method](changedAttributes, options);
+                definition = _.bind(model.methods[method], model)(changedAttributes, options);
             } else {
                 definition = model.methods[method];
             }

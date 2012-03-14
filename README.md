@@ -157,7 +157,7 @@ deviceModel.addDeviceToRoom(); // Calls 'addDeviceToRoom'
 deviceModel.addDeviceToRoom({success: function { ... }, error: function () { ... }});
 
 // And you can bind events
-deviceModel.bind('call:addDeviceRoom', function () { ... });
+deviceModel.bind('called:addDeviceRoom', function () { ... });
 ```
 
 ### Adding params to the methods
@@ -274,17 +274,45 @@ deviceModelTwo.save({name: 'My snd. new device', invalidate: true});
 var deviceModelThree = new DeviceModel();
 deviceModelThree.save({name: 'My thr. new device'});
 ```
-You got the idea?
+You get the idea...
 
 ### Parsers
+After all this fetching and calling methods, you might wonder what happens
+with the return value of remotly invoked functions that are not mapped to the 'read'
+method?! Short answer: Nothing.
+
+Lets change that.
+
+```javascript
+var DeviceModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+	    addDeviceToRoom : ['setRoomForDevice' , 'id', 'roomId']
+	},
+	parsers: {
+		addDeviceToRoom: function (model, result) {
+			if (result.roomName) {
+				model.set({roomName: result.roomName});
+			}
+		}
+	}
+});
+
+var deviceModelThree = new DeviceModel();
+deviceModel.set({id: 10, roomId: 12});
+deviceModel.addDeviceToRoom();
+
+deviceModel.get('roomName'); // 'Living Room'
+```
 
 ### Collections
 
-### Namespace
+### Namespaces
 
 ### Exceptions 
 
-### TODO
+## TODO
 
 + Add more inline documentation
 + Add more unit tests (edge cases)
@@ -293,12 +321,13 @@ You got the idea?
 + Add API Docs
 + Clean up code
 + Include JSLint in the CI and build process
++ FIX TYPOS!!!
 
-### Changelog
+## Changelog
 
 -
 
-### Build on the shoulder of giants
+## Build on the shoulder of giants
 
 ## License
 Copyright (c) Sebastian Golasch ([@asciidisco](https://twitter.com/#!/asciidisco)) 2012
