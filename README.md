@@ -119,7 +119,7 @@ If you have more then one method to map (e.g. complete CRUD plus some other stuf
 you can define them as follows:
 
 ```javascript
-var TextModel = Backbone.Model.extend({
+var DeviceModel = Backbone.Model.extend({
 	url: 'path/to/my/rpc/handler',
 	rpc: new Backbone.Rpc(),
 	methods: {
@@ -138,12 +138,26 @@ to the corresponding Backbone methods.
 Example:
 
 ```javascript
-textmodel.fetch(); // Calls 'read'
-textmodel.save(); // Calls 'create'
-textmodel.save({id: 12}); // Calls 'update'
-textmodel.destroy(); // Calls 'remove'
+deviceModel.fetch(); 			// Calls 'read'
+deviceModel.save(); 			// Calls 'create'
+deviceModel.save({id: 12}); 	// Calls 'update'
+deviceModel.destroy(); 			// Calls 'remove'
 ```
 
+But what will happen to the 'addDeviceToRoom' method?
+You can call it directly!
+
+```javascript
+deviceModel.addDeviceToRoom(); // Calls 'addDeviceToRoom'
+
+// This methods acts like all the other methods, so you can do options:
+deviceModel.addDeviceToRoom({success: function { ... }, error: function () { ... }});
+
+// And you can bind events
+deviceModel.bind('call:addDeviceRoom', function () { ... });
+```
+
+### Adding params to the methods
 
 
 ## License
