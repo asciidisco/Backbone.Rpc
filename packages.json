@@ -1,22 +1,27 @@
 {
    "name": "Backbone.Rpc",
    "version": "0.1.0",
-   "description": "Plugin for using the backbone js library with json-rpc instead of the native REST implementation",
+   "description": "Plugin for using backbone js with json-rpc instead of the native REST implementation",
    "homepage": "http://www.asciidisco.com/projects/backboneRpc",
-   "keywords": ["backbone", "plugin", "rpc", "json", "json-rpc"],
+   "keywords": ["backbone", "plugin", "rpc", "json", "client", "browser"],
    "maintainers": [
         {
             "name": "Sebastian Golasch (asciidisco)",
-            "email": "oss@asciidisco.com",
+            "email": "public@asciidisco.com",
             "web": "http://asciidisco.com" 
         }
    ],
    "licenses": [{ "type": "MIT", "url": "http://mit-license.org/" }],
    "repositories": [{ "type": "git", "url": "https://github.com/asciidisco/Backbone.Rpc" }],
-   "main": "./dist/backbone.rpc.js",
+   "lib": ".",
+   "main": "./backbone.rpc.js",
    "devDependencies": { 
- 		"qunit": "0.2.x",
-      "backbone": "0.9.x",
-      "jquery": "1.7.x"
-   }
+ 		"qunit": ">=0.2.x",
+      "sinon": ">=1.3.x"
+   },
+  "dependencies"  : {
+    "underscore"  : ">=1.3.1",
+     "backbone": ">=0.9.x",
+     "jquery": ">=1.7.x"    
+  },
 }
