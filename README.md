@@ -6,7 +6,7 @@ Plugin for using the backbone js library with json-rpc instead of the native RES
 [Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)<br />
 [Docs](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)<br />
 [Tests](http://asciidisco.github.com/Backbone.Rpc/test/index.html)<br />
-NPM - Will follow soon
+[NPM registry](http://search.npmjs.org/#/Backbone.Rpc)
 
 
 ## Introduction
@@ -37,6 +37,10 @@ from the root folder
 require(['path/to/backbone.rpc'], function (Backbone) {
   /* Do stuff with Backbone here */
 });
+```
+### NPM
+```shell
+$ npm install Backbone.Rpc
 ```
 
 ### CommonJS
