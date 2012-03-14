@@ -29,15 +29,20 @@ a vanilla javascript.
 
 The plugin itself has three dependencies, underscore.js, jQuery and backbone.js
 
+### AMD
 ```javascript
 // AMD
 require(['path/to/backbone.rpc'], function (Backbone) {
   /* Do stuff with Backbone here */
 });
-
+```
+### CommonJS
+```javascript
 // CommonJS
 var Backbone = require('path/to/backbone.rpc');
 ```
+
+### Vanilla JS
 ```html
 <!-- Vanilla javascript -->
 <script src="path/to/jquery.js"></script>
@@ -49,8 +54,8 @@ var Backbone = require('path/to/backbone.rpc');
 </script>
 ```
 
-## License & Getting Involved
-Copyright (c) Sebastian Golasch
+## License
+Copyright (c) Sebastian Golasch 2012
 
 The plugin is released under the MIT License. Feel free to add and/or modify
 it´s contents. If you<br />
