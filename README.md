@@ -1,7 +1,7 @@
 ## Backbone.Rpc
 Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
 
-## Build Status, Anotated Source Code & Tests
+## Build Status, Project Page, Annotated Source & Tests
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br />
 [Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)<br />
 [Docs](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)<br />
@@ -12,13 +12,14 @@ In nearly every javascript developers life, there is a point when you need to wo
 rusty old Java devs. This happend to me when I created this plugin.
 Instead of using a nice RESTful interface, the backend guys came around with a
 json-rpc 2.0 implementation. It was clearly unusable with the default
-backbone request handling.
+backbone request handling. So this little piece of software was the outcome
+of my will to use Backbone.
 
 ## Installation
 
 The plugin itself implements the Universal Module Definition (UMD).
 You can use it with a CommonJS like loader, or with an AMD loader or via
-a vanilla javascript.
+vanilla javascript.
 
 The plugin itself has three dependencies, underscore.js, jQuery and backbone.js
 
@@ -172,7 +173,7 @@ we see an empty params array.
 ```
 
 If we now do the following and take a look at the request, our current example creates,
-we see what this will do to our request:
+we see what this will change:
 
 ```javascript
 deviceModel.set({id: 14});
@@ -181,9 +182,21 @@ deviceModel.fetch(); // Calls 'read'
 // Request from the 'read' call
 {"jsonrpc":"2.0","method":"getFilteredDevicesById","id":"1331724849298","params":["14"]}:
 ```
+Hopefully you noticed that the contents of the 'id' attribute are applied as part of the 
+params array in the response.
+
+As seen in the update call, you can add as many as params as you like:
+
+```javascript
+update: ['setDeviceName', 'id', 'Name']
+```
+
+### Fire multiple RPC calls with one method call 
+
+
 
 ## License
-Copyright (c) Sebastian Golasch (@asciidisco) 2012
+Copyright (c) Sebastian Golasch ([@asciidisco](https://twitter.com/#!/asciidisco)) 2012
 
 The plugin is released under the MIT License. Feel free to add and/or modify
 it´s contents. Feel free to contact me if you have any questions.
