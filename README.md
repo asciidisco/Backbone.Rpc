@@ -136,6 +136,7 @@ Here we have five methods. The first four (read, create, remove, update) will be
 to the corresponding Backbone methods.
 
 Example:
+
 ```javascript
 textmodel.fetch(); // Calls 'read'
 textmodel.save(); // Calls 'create'
