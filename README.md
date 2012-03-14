@@ -5,7 +5,9 @@ Plugin for using the backbone js library with json-rpc instead of the native RES
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br /><br />
 [Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)<br />
 [Docs](http://asciidisco.github.com/Backbone.Rpc/docs/backbone.rpc.html)<br />
-[Tests](http://asciidisco.github.com/Backbone.Rpc/test/index.html)
+[Tests](http://asciidisco.github.com/Backbone.Rpc/test/index.html)<br />
+NPM - Will follow soon
+
 
 ## Introduction
 In nearly every javascript developers life, there is a point when you need to work with
@@ -228,6 +230,51 @@ This results in two simultanious POST requests against the rpc handler.
 ```
 
 ### Dynamicly created request methods
+Lets stick with the multiple RPC call example a bit.
+Maybe you wan´t to only invalidate the Server cache under specific circumstances.
+To keep it´simple, only when the 'invalidate' attribute in the model is true.
+Mhhh... seems tricky?!
+
+Functions to the rescue:
+
+```javascript
+var DeviceModel = Backbone.Model.extend({
+	url: 'path/to/my/rpc/handler',
+	rpc: new Backbone.Rpc(),
+	methods: {
+	    create: function (changedAttributes, options) {
+	    	var methodsToCall = [];
+	    	// we always wan´t to change the name
+	    	methodsToCall.push(['addDevice', 'name']);
+	    	// check if we should invalidate the cache
+	    	if (this.get('invalidate') === true) {
+	    		methodsToCall.push(['invalidateCache']);
+	    		// reset the invalidation flag
+	    		this.set({invalidate: false});
+	    	}
+
+	    	return  methodsToCall;
+	    }
+	},
+	defaults: {
+		invalidate: false
+	}
+}
+});
+
+// does not invalidate cache
+var deviceModelOne = new DeviceModel();
+deviceModelOne.save({name: 'My fst. new device'});
+
+// invalidates
+var deviceModelTwo = new DeviceModel();
+deviceModelTwo.save({name: 'My snd. new device', invalidate: true});
+
+// again does not invalidate the cache
+var deviceModelThree = new DeviceModel();
+deviceModelThree.save({name: 'My thr. new device'});
+```
+You got the idea?
 
 ### Parsers
 
@@ -236,6 +283,20 @@ This results in two simultanious POST requests against the rpc handler.
 ### Namespace
 
 ### Exceptions 
+
+### TODO
+
++ Add more inline documentation
++ Add more unit tests (edge cases)
++ Increase stability of the build process (Windows)
++ More real world browser tests
++ Add API Docs
++ Clean up code
++ Include JSLint in the CI and build process
+
+### Changelog
+
+-
 
 ### Build on the shoulder of giants
 
