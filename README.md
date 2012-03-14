@@ -427,14 +427,14 @@ Thanks to all the great people behind the following projects,
 who helped me with developing this one:
 
 [jQuery](http://jquery.com)<br />
-[backbone](http://backbonejs.org/))<br />
-[underscore](http://underscorejs.org/))<br />
-[PhantomJS](http://www.phantomjs.org/))<br />
-[Travis CI](http://travis-ci.org/))<br />
-[QUnit](http://docs.jquery.com/QUnit))<br />
-[Sinon](http://sinonjs.org/))<br />
-[Cake](http://coffeescript.org/))<br />
-[Uglify](https://github.com/mishoo/UglifyJS))<br />
+[backbone](http://backbonejs.org/)<br />
+[underscore](http://underscorejs.org/)<br />
+[PhantomJS](http://www.phantomjs.org/)<br />
+[Travis CI](http://travis-ci.org/)<br />
+[QUnit](http://docs.jquery.com/QUnit)<br />
+[Sinon](http://sinonjs.org/)<br />
+[Cake](http://coffeescript.org/)<br />
+[Uglify](https://github.com/mishoo/UglifyJS)<br />
 [DocumentUp](http://documentup.com/)
 
 ## License
