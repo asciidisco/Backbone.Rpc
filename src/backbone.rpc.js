@@ -1,7 +1,9 @@
+/*jslint nomen: true, unparam: true, indent: 4, es5: false */
 // Backbone.Rpc
 // Plugin for using the backbone js library with a remote json-rpc handler
 // instead of the default REST one
-(function (root, factory, undef) {
+(function (root, define, require, exports, module, factory, undef) {
+    'use strict';
     if (typeof exports === 'object') {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like enviroments that support module.exports,
@@ -20,7 +22,8 @@
         // Browser globals
         root.returnExportsGlobal = factory(root._, root.Backbone, root.$);
     }
-}(this, function (_, Backbone, $, undef) {
+}(this, this.define, this.require, this.exports, this.module, function (_, Backbone, $, undef) {
+    'use strict';
     var Rpc = function (options) {
             // merge the users options
             this.options = options !== undef ? options : {};
@@ -35,7 +38,7 @@
         oldSync = Backbone.sync,
         // storage object to keep track of changes from the loaded objects
         storage = {};
-    
+
     // TODO: Document
     Rpc.prototype = {
         // TODO: Document
@@ -54,7 +57,7 @@
         url: null,
 
         // TODO: Document
-        responseID: null, 
+        responseID: null,
 
         // TODO: Document
         exceptions: {
@@ -65,17 +68,17 @@
             noResponse: {code: -5, message: 'No response'},
             noDefError: {code: -6, message: 'No error defined'},
             renderError: function (message, code) {
-                return {code: code !== undef ? -7 : code, message: message ? 'No error defined' : message}
+                return {code: (code !== undef ? -7 : code), message: (message ? 'No error defined' : message)};
             }
         },
 
         // TODO: Document
-        onSuccess: function (callback, id, data, status, response) {
+        onSuccess: function (callback, id, data) {
             // check if callback variable is a function
             if (_.isFunction(callback) === true) {
                 // check if we have valid response data
                 if (data === null || data === undef) {
-                    this.handleExceptions(this.exceptions.noResponse)
+                    this.handleExceptions(this.exceptions.noResponse);
                     return this;
                 }
 
@@ -93,10 +96,10 @@
         },
 
         // TODO: Document
-        onError: function (callback, data, status, response) {
+        onError: function (callback, data) {
             // check if we have valid response data
             if (data === null || data === undef) {
-                this.handleExceptions(this.exceptions.noResponse)
+                this.handleExceptions(this.exceptions.noResponse);
                 return this;
             }
 
@@ -109,17 +112,18 @@
         },
 
         // TODO: Document
-        query: function (fn, params, callback, error) {
-            var id = String((new Date()).getTime());
+        query: function (fn, params, callback) {
+            var id = String((new Date()).getTime()),
+                ret = null;
             this.responseID = id;
             // generate unique request id (timestamp)
             // check if params and the function name are ok, then...
             if (_.isArray(params) && _.isString(fn)) {
                 // send query
-                return $.ajax({
+                ret = $.ajax({
                     contentType : 'application/x-www-form-urlencoded; charset=' + this.charset,
                     type        : 'POST',
-                    dataType    : 'json',                    
+                    dataType    : 'json',
                     url         : this.url,
                     data        : JSON.stringify({
                         jsonrpc : '2.0',
@@ -133,29 +137,32 @@
                     },
                     success: _.bind(function (data, status, response) {
                         if (data !== null && data.error !== undef) {
-                            this.onError(callback, data, status, response); 
+                            this.onError(callback, data, status, response);
                         } else {
-                            this.onSuccess(callback, id, data, status, response); 
+                            this.onSuccess(callback, id, data, status, response);
                         }
                     }, this),
                     error: _.bind(function (jXhr, status, response) {
                         if (jXhr.status !== 404 && jXhr.status !== 500) {
-                            this.onError(callback, jXhr, status, response); 
+                            this.onError(callback, jXhr, status, response);
                         }
                     }, this)
                 });
             } else {
-                return this.handleExceptions(this.exceptions.typeMissmatch);
+                ret = this.handleExceptions(this.exceptions.typeMissmatch);
             }
+
+            return ret;
         },
 
         // TODO: Document
         checkMethods: function (cb, params, model, method, options, scb, ecb) {
-            var definition          = null, 
-                deeperNested        = false, 
-                exec                = null, 
-                valuableDefinition  = [], 
-                changedAttributes   = {};
+            var definition          = null,
+                deeperNested        = false,
+                exec                = null,
+                valuableDefinition  = [],
+                changedAttributes   = {},
+                def                 = null;
 
             // rewrite method if name is delete
             method = method === 'delete' ? 'remove' : method;
@@ -187,7 +194,7 @@
 
             // execute a single call
             if (deeperNested !== true) {
-                var def = _.clone(definition);
+                def = _.clone(definition);
                 exec = def.shift();
                 if (def.length > 0) {
                     _.each(def, function (param) {
@@ -195,7 +202,7 @@
                             valuableDefinition.push('');
                         } else {
                             if (model.get(param) !== undef) {
-                            valuableDefinition.push(model.get(param));
+                                valuableDefinition.push(model.get(param));
                             } else {
                                 if (options[param] !== undef) {
                                     valuableDefinition.push(options[param]);
@@ -251,16 +258,16 @@
         },
 
         // Default exception handler
-        defaultExceptionHandler: function(exception) {
+        defaultExceptionHandler: function (exception) {
             throw 'Error code: ' + exception.code + ' - message: ' + exception.message;
         },
 
         // Exception handler
-        handleExceptions: function(exception) {
+        handleExceptions: function (exception) {
             var exceptionHandler = _.isFunction(this.options.exceptionHandler) ? this.options.exceptionHandler : this.defaultExceptionHandler;
             exceptionHandler.call(this, exception);
             return this;
-        }      
+        }
     };
 
     // assign rpc to backbone itself
@@ -292,13 +299,14 @@
     });
 
     // overwrite backbones sync
-    Backbone.sync = (function(Rpc) {
+    Backbone.sync = (function (Rpc) {
         // Generate a new Sync Method for JSON RPC Queuing
-        var sync = function(method, model, options) {
-            // Default success model callback
-            var successCb = function (data, error) {
+        var rpc = null,
+            sync = function (method, model, options) {
+                // Default success model callback
+                var successCb = function (data, error) {
                     // check if we have an error object
-                    if(error !== null && error !== undef) {
+                    if (error !== null && error !== undef) {
                         options.error(model, error);
                         return this;
                     }
@@ -342,42 +350,42 @@
                     options.success(data);
                 },
 
-                // define a local error callback that will hand over the data to the backbone error handler
-                errorCb = function (data) {
-                    options.error(model, data);
-                };
+                    // define a local error callback that will hand over the data to the backbone error handler
+                    errorCb = function (data) {
+                        options.error(model, data);
+                    };
 
-            // check if we have a correct (e.g. Backbone.Rpc) model instance
-            if (model.rpc instanceof Rpc) {
-                // assign the models JsonRpc instance locally
-                rpc = model.rpc;
+                // check if we have a correct (e.g. Backbone.Rpc) model instance
+                if (model.rpc instanceof Rpc) {
+                    // assign the models JsonRpc instance locally
+                    rpc = model.rpc;
 
-                // First, set the api url
-                rpc.url = _.isFunction(model.url) ? model.url() : model.url;
+                    // First, set the api url
+                    rpc.url = _.isFunction(model.url) ? model.url() : model.url;
 
-                // Second, set the namespace
-                if (_.isString(model.namespace) === true) {
-                   rpc.namespace = model.namespace;
-                }
-
-                // Third, check the remote method parameter
-                if (model.methods === undef) {
-                    throw 'Backbone.Rpc Error: No Method(s) given!';
-                } else {
-                    // If we have a proper method
-                    // assign the given paramters (if exist)
-                    // else an empty object
-                    if (typeof model.params !== 'object') {
-                        model.params = {};
+                    // Second, set the namespace
+                    if (_.isString(model.namespace) === true) {
+                        rpc.namespace = model.namespace;
                     }
+
+                    // Third, check the remote method parameter
+                    if (model.methods === undef) {
+                        throw 'Backbone.Rpc Error: No Method(s) given!';
+                    } else {
+                        // If we have a proper method
+                        // assign the given paramters (if exist)
+                        // else an empty object
+                        if (typeof model.params !== 'object') {
+                            model.params = {};
+                        }
+                    }
+
+                    // go on and check the rpc methods
+                    return rpc.checkMethods(rpc.query, model.params, model, method, options, successCb, errorCb);
                 }
 
-                // go on and check the rpc methods
-                return rpc.checkMethods(rpc.query, model.params, model, method, options, successCb, errorCb);
-            }
-
-            return null;
-        };
+                return null;
+            };
 
 
          // Expose the previous Backbone.sync as Backbone.sync.previous in case
@@ -385,7 +393,7 @@
         sync.previous = oldSync;
 
         return sync;
-    })(Rpc);
+    }(Rpc));
 
     return Backbone;
 }));
