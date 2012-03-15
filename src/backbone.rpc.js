@@ -1,4 +1,4 @@
-/*jslint nomen: true, unparam: true, indent: 4, es5: false */
+/*jslint nomen: true, unparam: true, indent: 4,  maxlen: 160, es5: false */
 // Backbone.Rpc
 // Plugin for using the backbone js library with a remote json-rpc handler
 // instead of the default REST one
