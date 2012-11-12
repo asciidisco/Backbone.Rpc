@@ -1,4 +1,3 @@
-/*jslint nomen: true, unparam: true, indent: 4,  maxlen: 160, es5: false */
 // Backbone.Rpc
 // Plugin for using the backbone js library with a remote json-rpc handler
 // instead of the default REST one
@@ -12,11 +11,11 @@
     } else if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
-            // Check if 
+            // Check if
             _ = _ === undef ? root._ : _;
             Backbone = Backbone === undef ? root.Backbone : Backbone;
             $ = $ === undef ? root.$ : $;
-            return (root.returnExportsGlobal = factory(_, Backbone, $));
+            return (root.Backbone = factory(_, Backbone, $));
         });
     } else {
         // Browser globals
@@ -29,6 +28,8 @@
             this.options = options !== undef ? options : {};
             // check if we have a non std. namespace delimter
             this.namespaceDelimiter = options !== undef && options.namespaceDelimiter !== undef ? options.namespaceDelimiter : this.namespaceDelimiter;
+            // check if we have a non std. content-type
+            this.contentType = options !== undef && options.contentType !== undef ? options.contentType : this.contentType;
             // fix issue with the loss of this
             _.bindAll(this);
         },
@@ -41,22 +42,25 @@
 
     // TODO: Document
     Rpc.prototype = {
-        // TODO: Document
+        // User defined options placeholder
         options: {},
 
-        // TODO: Document
+        // Default charset
         charset: 'iso-8859-1',
 
-        // TODO: Document
+        // Default namespace
         namespace: '',
 
-        // TODO: Document
+        // Default namespace delimiter
         namespaceDelimiter: '/',
 
-        // TODO: Document
+        // Default content type
+        contentType: 'application/json',
+
+        // User set url placeholder
         url: null,
 
-        // TODO: Document
+        // Server response id
         responseID: null,
 
         // TODO: Document
@@ -121,7 +125,7 @@
             if (_.isArray(params) && _.isString(fn)) {
                 // send query
                 ret = $.ajax({
-                    contentType : 'application/x-www-form-urlencoded; charset=' + this.charset,
+                    contentType : this.contentType + '; charset=' + this.charset,
                     type        : 'POST',
                     dataType    : 'json',
                     url         : this.url,
@@ -279,7 +283,7 @@
         constructor: function (model) {
             // check if the model has the rpc property and methods defined
             if (this.rpc !== undef && _.isFunction(this.rpc.invoke) === true && this.methods !== undef) {
-                // walk through the methods 
+                // walk through the methods
                 _.each(this.methods, _.bind(function (method, signature) {
                     // check if we have a 'non standard' signature
                     if ({'read': 1, 'create': 1, 'remove': 1, 'update': 1}[signature] !== 1) {
@@ -336,7 +340,7 @@
                         storage[data._rpcId] = data;
                     }
 
-                    // change data attr to be an empty array, if it´s null or undefined                    
+                    // change data attr to be an empty array, if it´s null or undefined
                     if (data === undef || data === null) {
                         data = [];
                     }

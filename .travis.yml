@@ -4,6 +4,4 @@ node_js:
 before_script:
   - "git submodule update --init"
   - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - "phantomjs bin/phantomjs.js"
-  - "nodelint src/backbone.rpc.js"
+  - "grunt travis --verbose"

@@ -14,8 +14,8 @@ module('Backbone.Rpc', {
       if (_.isFunction(this.errorCallback)) {
         this.errorCallback(arguments);
       }
-    }, this);    
-  } 
+    }, this);
+  }
 });
 
 test("initialize", function () {
@@ -78,7 +78,7 @@ test("can delete simple data", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can save simple data", function () {
@@ -106,7 +106,7 @@ test("can save simple data", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can update simple data", function () {
@@ -134,7 +134,7 @@ test("can update simple data", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can call simple non std. method", function () {
@@ -162,7 +162,7 @@ test("can call simple non std. method", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can parse return values of method", function () {
@@ -178,7 +178,7 @@ test("can parse return values of method", function () {
         parsers: {
           someStrangeMethod: function (result) {
             this.set({id: result.id, workingOrder: result.wo});
-          } 
+          }
         }
     });
   var modelInstance = new Model();
@@ -195,7 +195,7 @@ test("can parse return values of method", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("default exception handler throws error", function () {
@@ -251,7 +251,7 @@ test("can add custom exception handler", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if bad response id is given", function () {
@@ -278,7 +278,7 @@ test("throws exception if bad response id is given", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if server responds with 404", function () {
@@ -305,7 +305,7 @@ test("throws exception if server responds with 404", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if server responds with 500", function () {
@@ -332,7 +332,7 @@ test("throws exception if server responds with 500", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if server sends an empty response", function () {
@@ -359,7 +359,7 @@ test("throws exception if server sends an empty response", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if method parameters are in the wrong format", function () {
@@ -386,7 +386,7 @@ test("throws exception if method parameters are in the wrong format", function (
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("throws exception if error message is blank", function () {
@@ -413,7 +413,7 @@ test("throws exception if error message is blank", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can fetch simple data (namespaced)", function () {
@@ -457,7 +457,7 @@ test("can delete simple data (namespaced)", function () {
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
-        namespace: 'abcde',        
+        namespace: 'abcde',
         methods: {
           remove:  ['deleteText', 'id']
         }
@@ -481,7 +481,7 @@ test("can delete simple data (namespaced)", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can save simple data (namespaced)", function () {
@@ -491,7 +491,7 @@ test("can save simple data (namespaced)", function () {
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
-        namespace: 'abcde',        
+        namespace: 'abcde',
         methods: {
           create:  ['createText']
         }
@@ -510,7 +510,7 @@ test("can save simple data (namespaced)", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can update simple data (namespaced)", function () {
@@ -520,7 +520,7 @@ test("can update simple data (namespaced)", function () {
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
-        namespace: 'abcde',        
+        namespace: 'abcde',
         methods: {
           update:  ['updateText', 'id', 'text']
         }
@@ -539,7 +539,7 @@ test("can update simple data (namespaced)", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can call simple non std. method (namespaced)", function () {
@@ -549,7 +549,7 @@ test("can call simple non std. method (namespaced)", function () {
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
-        namespace: 'abcde',        
+        namespace: 'abcde',
         methods: {
           doSmthNonStandard:  ['doSmthPrettyStrange']
         }
@@ -568,7 +568,7 @@ test("can call simple non std. method (namespaced)", function () {
 
   //fire response
   server.respond();
-  server.restore();    
+  server.restore();
 });
 
 test("can operate multiple methods", function () {
@@ -581,7 +581,7 @@ test("can operate multiple methods", function () {
   this.errors = [];
   var Model = Backbone.Model.extend({
         url: this.url,
-        rpc: new Backbone.Rpc(),      
+        rpc: new Backbone.Rpc(),
         methods: {
           update: [['setHeadline', 'id', 'headline'], ['setText', 'id', 'text']],
         }
@@ -601,8 +601,8 @@ test("can operate multiple methods", function () {
   modelInstance.save({headline: 'a new headline', text: 'a new text'}, {success: successCb});
 
   // fire response
-  requests[0].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[0].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 1"} }');   
-  requests[1].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[1].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 2"} }'); 
+  requests[0].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[0].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 1"} }');
+  requests[1].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[1].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 2"} }');
   xhr.restore();
 });
 
@@ -617,7 +617,7 @@ test("can operate multiple methods (namespaced)", function () {
   var Model = Backbone.Model.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
-        namespace: 'abcde',        
+        namespace: 'abcde',
         methods: {
           update: [['setHeadline', 'id', 'headline'], ['setText', 'id', 'text']],
         }
@@ -644,9 +644,113 @@ test("can operate multiple methods (namespaced)", function () {
   equal(JSON.parse(requests[1].requestBody).params[0], 1, 'Parameters set correctly');
 
   // fire response
-  requests[0].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[0].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 1"} }');   
-  requests[1].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[1].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 2"} }'); 
+  requests[0].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[0].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 1"} }');
+  requests[1].respond(200, this.contentType, '{ "id": ' + JSON.parse(requests[1].requestBody).id + ', "jsonrpc": "2.0", "result": {"req": "no 2"} }');
   xhr.restore();
+});
+
+test("collection can fetch data with a simple argument", function () {
+  expect(2);
+  this.errors = [];
+  server = sinon.fakeServer.create();
+  var Collection = Backbone.Collection.extend({
+        url: this.url,
+        rpc: new Backbone.Rpc(),
+        model: Backbone.Model,
+        beginningWith: 3,
+        methods: {
+          read: ['getAllNumbers', 'beginningWith']
+        }
+    });
+  var collectionInstance = new Collection();
+  var successCb = function (model) {
+    // assert list of numbers
+    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+  };
+
+  // fetch the mocked data
+  collectionInstance.fetch({success: successCb});
+
+  // check arguments
+  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameters set correctly');
+
+  // set response
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+
+  //fire response
+  server.respond();
+  server.restore();
+});
+
+
+test("collection can fetch data with simple arguments", function () {
+  expect(2);
+  this.errors = [];
+  server = sinon.fakeServer.create();
+  var Collection = Backbone.Collection.extend({
+        url: this.url,
+        rpc: new Backbone.Rpc(),
+        model: Backbone.Model,
+        beginningWith: 3,
+        endsWith; 5,
+        methods: {
+          read: ['getAllNumbers', 'beginningWith', 'endsWith']
+        }
+    });
+  var collectionInstance = new Collection();
+  var successCb = function (model) {
+    // assert list of numbers
+    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+  };
+
+  // fetch the mocked data
+  collectionInstance.fetch({success: successCb});
+
+  // check arguments
+  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameter 1 set correctly');
+  equal(JSON.parse(requests[1].requestBody).params[0], 5, 'Parameter 2 set correctly');
+
+  // set response
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+
+  //fire response
+  server.respond();
+  server.restore();
+});
+
+test("collection can fetch simple data with a functional argument", function () {
+  expect(2);
+  this.errors = [];
+  server = sinon.fakeServer.create();
+  var Collection = Backbone.Collection.extend({
+        url: this.url,
+        rpc: new Backbone.Rpc(),
+        model: Backbone.Model,
+        beginningWith: function () {
+          return 3;
+        },
+        methods: {
+          read: ['getAllNumbers', 'beginningWith']
+        }
+    });
+  var collectionInstance = new Collection();
+  var successCb = function (model) {
+    // assert list of numbers
+    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+  };
+
+  // fetch the mocked data
+  collectionInstance.fetch({success: successCb});
+
+  // check arguments
+  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameters set correctly');
+
+  // set response
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+
+  //fire response
+  server.respond();
+  server.restore();
 });
 
 // complex method scenario

@@ -1,5 +1,5 @@
 ## Backbone.Rpc
-Plugin for using the backbone js library with json-rpc instead of the native REST implementation 
+Plugin for using the backbone js library with json-rpc instead of the native REST implementation
 
 ## Build Status, Project Page, Annotated Source & Tests
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br /><br />
@@ -25,7 +25,7 @@ vanilla javascript.
 
 The plugin itself has three dependencies, underscore.js, jQuery and backbone.js
 
-You can directly download the 
+You can directly download the
 [Development Version](https://raw.github.com/asciidisco/Backbone.Rpc/master/backbone.rpc.js)
 or the
 [Production Version](https://raw.github.com/asciidisco/Backbone.Rpc/master/backbone.rpc.min.js)
@@ -188,7 +188,7 @@ deviceModel.fetch(); // Calls 'read'
 // Request created by the 'read' call
 {"jsonrpc":"2.0","method":"getFilteredDevicesById","id":"1331724849298","params":["14"]}:
 ```
-Hopefully you noticed that the contents of the 'id' attribute are applied as part of the 
+Hopefully you noticed that the contents of the 'id' attribute are applied as part of the
 params array in the response.
 
 As seen in the update call, you can add as many as params as you like:
@@ -197,7 +197,7 @@ As seen in the update call, you can add as many as params as you like:
 update: ['setDeviceName', 'id', 'name']
 ```
 
-### Fire multiple RPC calls with one method call 
+### Fire multiple RPC calls with one method call
 Sometimes we need to do more then one remote method call when we operate on an entity.
 Using our device example, we can say that every time a device will be created we need
 to reset the server side device cache.
@@ -213,7 +213,7 @@ var DeviceModel = Backbone.Model.extend({
 	methods: {
 		// ...
 	    create: [
-	    	['addDevice', 'name'], 
+	    	['addDevice', 'name'],
 	    	['invalidateCache']
 	    ]
 	    // ...
@@ -307,7 +307,7 @@ var DeviceModel = Backbone.Model.extend({
 var deviceModelThree = new DeviceModel();
 deviceModel.set({id: 10, roomId: 12});
 deviceModel.addDeviceToRoom({success: function () {
-	deviceModel.get('roomName'); // 'Living Room'	
+	deviceModel.get('roomName'); // 'Living Room'
 }});
 
 ```
@@ -328,6 +328,18 @@ var Devices = Backbone.Collection.extend({
 
 var devices = new Devices();
 devices.fetch();
+```
+
+### Content-Type
+The default content type of requests is 'application/json'
+You can override it like this:
+
+```javascript
+// ...
+rpc: new Backbone.Rpc({
+    contentType: 'application/json'
+})
+//...
 ```
 
 ### Namespaces
@@ -360,7 +372,7 @@ var TextModel = Backbone.Model.extend({
 	namespace: 'MySuperEnterprisyNamespace',
 	url: 'path/to/my/rpc/handler',
 	rpc: new Backbone.Rpc({
-		namespaceSeparator: '::'
+		namespaceDelimiter: '::'
 	}),
 	methods: {
 		read:  ['getRandomTextSnippet']
@@ -377,7 +389,7 @@ textModel.fetch();
 
 Nice, hah?!
 
-### Exceptions 
+### Exceptions
 When working with a JSON RPC Service you can encounter different types of errors.
 The default error handler simply throws if something bad happens.
 
@@ -411,35 +423,17 @@ var TextModel = Backbone.Model.extend({
 });
 ```
 
-## TODO
-
-+ Add more inline documentation
-+ Add more unit tests (edge cases)
-+ Increase stability of the build process (Windows)
-+ More real world browser tests
-+ Add API Docs
-+ Clean up code
-+ Include JSLint in the CI and build process
-+ FIX TYPOS!!!
-
 ## Changelog
 
--
+### 0.1.1
++ Switch build system from cake to grunt
++ Cleaned up
++ Fixed #3 - Content type defaults to 'application/json' & can now be overriden
++ Fixed #5 - README fixes & improvments
++ Inline doc improvements
 
-## Build on the shoulder of giants
-Thanks to all the great people behind the following projects, 
-who helped me with developing this one:
-
-[jQuery](http://jquery.com)<br />
-[backbone](http://backbonejs.org/)<br />
-[underscore](http://underscorejs.org/)<br />
-[PhantomJS](http://www.phantomjs.org/)<br />
-[Travis CI](http://travis-ci.org/)<br />
-[QUnit](http://docs.jquery.com/QUnit)<br />
-[Sinon](http://sinonjs.org/)<br />
-[Cake](http://coffeescript.org/)<br />
-[Uglify](https://github.com/mishoo/UglifyJS)<br />
-[DocumentUp](http://documentup.com/)
+### 0.1.0
++ Initial Release
 
 ## License
 Copyright (c) Sebastian Golasch ([@asciidisco](https://twitter.com/#!/asciidisco)) 2012
