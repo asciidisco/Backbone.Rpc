@@ -205,11 +205,25 @@
                         if (param === '') {
                             valuableDefinition.push('');
                         } else {
-                            if (model.get(param) !== undef) {
-                                valuableDefinition.push(model.get(param));
+                            if (model instanceof Backbone.Collection) {
+                                if (model[param] !== undef) {
+                                    if (_.isFunction(model[param])) {
+                                        valuableDefinition.push(model[param]());
+                                    } else {
+                                        valuableDefinition.push(model[param]);
+                                    }
+                                } else {
+                                    if (options[param] !== undef) {
+                                        valuableDefinition.push(options[param]);
+                                    }
+                                }
                             } else {
-                                if (options[param] !== undef) {
-                                    valuableDefinition.push(options[param]);
+                                if (model.get(param) !== undef) {
+                                    valuableDefinition.push(model.get(param));
+                                } else {
+                                    if (options[param] !== undef) {
+                                        valuableDefinition.push(options[param]);
+                                    }
                                 }
                             }
                         }
@@ -386,11 +400,12 @@
 
                     // go on and check the rpc methods
                     return rpc.checkMethods(rpc.query, model.params, model, method, options, successCb, errorCb);
+                } else {
+                    return sync.previous.apply(model, arguments);
                 }
 
                 return null;
             };
-
 
          // Expose the previous Backbone.sync as Backbone.sync.previous in case
          // the caller wishes to switch provider

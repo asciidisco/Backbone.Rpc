@@ -619,7 +619,7 @@ test("can operate multiple methods (namespaced)", function () {
         rpc: new Backbone.Rpc(),
         namespace: 'abcde',
         methods: {
-          update: [['setHeadline', 'id', 'headline'], ['setText', 'id', 'text']],
+          update: [['setHeadline', 'id', 'headline'], ['setText', 'id', 'text']]
         }
     });
   var modelInstance = new Model({id: 1, headline: 'an headline', text: 'a text'});
@@ -650,13 +650,14 @@ test("can operate multiple methods (namespaced)", function () {
 });
 
 test("collection can fetch data with a simple argument", function () {
-  expect(2);
+  expect(4);
   this.errors = [];
   server = sinon.fakeServer.create();
   var Collection = Backbone.Collection.extend({
         url: this.url,
         rpc: new Backbone.Rpc(),
         model: Backbone.Model,
+        namespace: 'STFU',
         beginningWith: 3,
         methods: {
           read: ['getAllNumbers', 'beginningWith']
@@ -665,17 +666,20 @@ test("collection can fetch data with a simple argument", function () {
   var collectionInstance = new Collection();
   var successCb = function (model) {
     // assert list of numbers
-    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+    var data = collectionInstance.toJSON();
+    equal(data[0].n, 3);
+    equal(data[1].n, 4);
+    equal(data[2].n, 5);
   };
 
   // fetch the mocked data
   collectionInstance.fetch({success: successCb});
 
   // check arguments
-  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameters set correctly');
+  equal(JSON.parse(server.requests[0].requestBody).params[0], 3, 'Parameters set correctly');
 
   // set response
-  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{"n": 3}, {"n": 4}, {"n": 5}] }']);
 
   //fire response
   server.respond();
@@ -684,7 +688,7 @@ test("collection can fetch data with a simple argument", function () {
 
 
 test("collection can fetch data with simple arguments", function () {
-  expect(2);
+  expect(5);
   this.errors = [];
   server = sinon.fakeServer.create();
   var Collection = Backbone.Collection.extend({
@@ -692,7 +696,7 @@ test("collection can fetch data with simple arguments", function () {
         rpc: new Backbone.Rpc(),
         model: Backbone.Model,
         beginningWith: 3,
-        endsWith; 5,
+        endsWith: 5,
         methods: {
           read: ['getAllNumbers', 'beginningWith', 'endsWith']
         }
@@ -700,18 +704,21 @@ test("collection can fetch data with simple arguments", function () {
   var collectionInstance = new Collection();
   var successCb = function (model) {
     // assert list of numbers
-    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+    var data = collectionInstance.toJSON();
+    equal(data[0].n, 3);
+    equal(data[1].n, 4);
+    equal(data[2].n, 5);
   };
 
   // fetch the mocked data
   collectionInstance.fetch({success: successCb});
 
   // check arguments
-  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameter 1 set correctly');
-  equal(JSON.parse(requests[1].requestBody).params[0], 5, 'Parameter 2 set correctly');
+  equal(JSON.parse(server.requests[0].requestBody).params[0], 3, 'Parameters set correctly');
+  equal(JSON.parse(server.requests[0].requestBody).params[1], 5, 'Parameter 2 set correctly');
 
   // set response
-  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{"n": 3}, {"n": 4}, {"n": 5}] }']);
 
   //fire response
   server.respond();
@@ -719,7 +726,7 @@ test("collection can fetch data with simple arguments", function () {
 });
 
 test("collection can fetch simple data with a functional argument", function () {
-  expect(2);
+  expect(4);
   this.errors = [];
   server = sinon.fakeServer.create();
   var Collection = Backbone.Collection.extend({
@@ -736,21 +743,48 @@ test("collection can fetch simple data with a functional argument", function () 
   var collectionInstance = new Collection();
   var successCb = function (model) {
     // assert list of numbers
-    deepEqual(collectionInstance.toJSON(), [{n: 3}, {n: 4}, {n: 5}]);
+    var data = collectionInstance.toJSON();
+    equal(data[0].n, 3);
+    equal(data[1].n, 4);
+    equal(data[2].n, 5);
   };
 
   // fetch the mocked data
   collectionInstance.fetch({success: successCb});
 
   // check arguments
-  equal(JSON.parse(requests[1].requestBody).params[0], 3, 'Parameters set correctly');
+  equal(JSON.parse(server.requests[0].requestBody).params[0], 3, 'Parameters set correctly');
 
   // set response
-  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{n: 3}, {n: 4}, {n: 5}] }']);
+  server.respondWith(this.method, this.url, [200, this.contentType,'{ "id": ' + collectionInstance.rpc.responseID + ', "jsonrpc": "2.0",  "result": [{"n": 3}, {"n": 4}, {"n": 5}] }']);
 
   //fire response
   server.respond();
   server.restore();
 });
 
-// complex method scenario
+
+test("Can use REST and RPC in conjunction", function () {
+  expect(1);
+  this.errors = [];
+  server = sinon.fakeServer.create();
+  var Model = Backbone.Model.extend({
+        url: "/test/xyz"
+    });
+  var modelInstance = new Model();
+  var successCb = function (model) {
+    // assert list of numbers
+    var data = modelInstance.toJSON();
+    equal(data.title, 'Hollywood - Part 2');
+  };
+
+  // fetch the mocked data
+  modelInstance.fetch({success: successCb});
+
+  // set response
+  server.respondWith("GET", "/test/xyz", [200, {"Content-Type": "application/json"}, '{"id":123,"title":"Hollywood - Part 2"}']);
+
+  //fire response
+  server.respond();
+  server.restore();
+});
