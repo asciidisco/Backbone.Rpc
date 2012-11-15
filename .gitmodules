@@ -1,9 +1,6 @@
 [submodule "vendor/qunit"]
 	path = vendor/qunit
 	url = git://github.com/jquery/qunit.git
-[submodule "vendor/qunit-logging"]
-	path = vendor/qunit-logging
-	url = git://github.com/keithamus/qunit-logging
 [submodule "vendor/jquery"]
 	path = vendor/jquery
 	url = git://github.com/jquery/jquery.git
