@@ -330,6 +330,32 @@ var devices = new Devices();
 devices.fetch();
 ```
 
+You can add dynamic arguments in Collections by referencing object properties
+
+```javascript
+var Devices = Backbone.Collection.extend({
+	url: 'path/to/my/rpc/handler',
+	namespace: 'MeNotJava',
+	rpc: new Backbone.Rpc(),
+	model: Device,
+	arg1: 'hello',
+	arg2: function () { return 'world' },
+	methods: {
+	    read : ['getDevices', 'arg1', 'arg2', 'arg3']
+	}
+});
+
+var devices = new Devices();
+devices.fetch();
+```
+
+This call results in the following RPC request:
+
+```javascript
+{"jsonrpc":"2.0","method":"MeNotJava/getDevices","id":"1331724850010","params":["hello", "world", "arg3"]}:
+```
+
+
 ### Content-Type
 The default content type of requests is 'application/json'
 You can override it like this:
@@ -424,6 +450,13 @@ var TextModel = Backbone.Model.extend({
 ```
 
 ## Changelog
+
+### 0.1.2
++ Grunt fixes
++ REST can now be used along with this plugin (Fixes #1)
++ Collections can now have dynamic arguments in calls (Fixes #4)
++ README improvements
++ More tests
 
 ### 0.1.1
 + Switch build system from cake to grunt
