@@ -10,6 +10,3 @@
 [submodule "vendor/backbone"]
 	path = vendor/backbone
 	url = git://github.com/documentcloud/backbone.git
-[submodule "vendor/sinon-web"]
-	path = vendor/sinon-web
-	url = git://github.com/cjohansen/sinon-web.git
