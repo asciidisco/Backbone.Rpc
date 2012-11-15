@@ -1,6 +1,6 @@
 {
    "name": "Backbone.Rpc",
-   "version": "0.1.1",
+   "version": "0.1.2",
    "description": "Plugin for using backbone js with json-rpc instead of the native REST implementation",
    "homepage": "http://asciidisco.github.com/Backbone.Rpc/index.html",
    "keywords": ["backbone", "plugin", "rpc", "json", "client", "browser"],
