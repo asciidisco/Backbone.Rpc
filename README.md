@@ -196,6 +196,28 @@ As seen in the update call, you can add as many as params as you like:
 ```javascript
 update: ['setDeviceName', 'id', 'name']
 ```
+##### Using named parameters
+
+The JSON-RPC 2.0 spec includes the support for passing parameters by-name.
+You can enabled this functionality by setting 'useNamedParameters' to true in your Backbone.Rpc options.
+
+```javascript
+var DeviceModel = Backbone.Model.extend({
+    url: '/api',
+    rpc: new Backbone.Rpc({
+        useNamedParameters: true
+    }),
+    methods: {
+        read: ['getFilteredDevicesById', 'id'],
+    }
+});
+...
+deviceModel.set({id: 14});
+deviceModel.fetch(); // Calls 'read'
+
+// Params is an object with named parameters
+{"jsonrpc":"2.0","method":"getFilteredDevicesById","id":"1331724849298","params":{"id":"14"}}:
+```
 
 ### Fire multiple RPC calls with one method call
 Sometimes we need to do more then one remote method call when we operate on an entity.

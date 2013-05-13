@@ -148,7 +148,7 @@ IN THE SOFTWARE.*/
             this.responseID = id;
             // generate unique request id (timestamp)
             // check if params and the function name are ok, then...
-            if (_.isArray(params) && _.isString(fn)) {
+            if ((_.isArray(params) || _.isObject(params)) && _.isString(fn)) {
                 // send query
                 ret = $.ajax({
                     contentType : this.contentType + '; charset=' + this.charset,
@@ -190,9 +190,11 @@ IN THE SOFTWARE.*/
             var definition          = null,
                 deeperNested        = false,
                 exec                = null,
-                valuableDefinition  = [],
                 changedAttributes   = {},
                 def                 = null;
+
+            var useNamed = (this.options.useNamedParameters) ? true : false;
+            var valuableDefinition = (useNamed) ? {} : [];
 
             // rewrite method if name is delete
             method = method === 'delete' ? 'remove' : method;
@@ -234,28 +236,52 @@ IN THE SOFTWARE.*/
                             if (model instanceof Backbone.Collection) {
                                 if (model[param] !== undef) {
                                     if (_.isFunction(model[param])) {
-                                        valuableDefinition.push(model[param]());
+                                        if (useNamed) {
+                                            valuableDefinition[param] = model[param]();
+                                        } else {
+                                            valuableDefinition.push(model[param]());
+                                        }
                                     } else {
-                                        valuableDefinition.push(model[param]);
+                                        if (useNamed) {
+                                            valuableDefinition[param] = model[param];
+                                        } else {
+                                            valuableDefinition.push(model[param]);
+                                        }
                                     }
                                 } else {
                                     if (options[param] !== undef) {
-                                        valuableDefinition.push(options[param]);
+                                        if (useNamed) {
+                                            valuableDefinition[param] = options[param];
+                                        } else {
+                                            valuableDefinition.push(options[param]);
+                                        }
                                     }
                                 }
                             } else {
                                 if (model.get(param) !== undef) {
-                                    valuableDefinition.push(model.get(param));
+                                    if (useNamed) {
+                                        valuableDefinition[param] = model.get(param);
+                                    } else {
+                                        valuableDefinition.push(model.get(param));
+                                    }
                                 } else {
                                     if (options[param] !== undef) {
-                                        valuableDefinition.push(options[param]);
+                                        if (useNamed) {
+                                            valuableDefinition[param] = options[param];
+                                        } else {
+                                            valuableDefinition.push(options[param]);
+                                        }
                                     }
                                 }
                             }
                         }
                     });
                 } else {
-                    valuableDefinition = [];
+                    if (useNamed) {
+                        valuableDefinition = {};
+                    } else {
+                        valuableDefinition = [];
+                    }
                 }
 
                 return cb(exec, valuableDefinition, scb, ecb);
