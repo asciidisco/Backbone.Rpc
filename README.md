@@ -1,6 +1,9 @@
 ## Backbone.Rpc
 Plugin for using the backbone js library with json-rpc instead of the native REST implementation
 
+This Plugin is not actively maintained anymore, PRs will be merged, but no further issues will be resolved.
+A newer (and actively maintained) plugin can be found here: [Backbone.RPC2](https://github.com/akinnee/Backbone.RPC2)
+
 ## Build Status, Project Page, Annotated Source & Tests
 [![Build Status](https://secure.travis-ci.org/asciidisco/Backbone.Rpc.png?branch=master)](http://travis-ci.org/asciidisco/Backbone.Rpc)<br /><br />
 [Project Page](http://asciidisco.github.com/Backbone.Rpc/index.html)<br />
