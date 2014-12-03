@@ -1,4 +1,7 @@
 ## Backbone.Rpc
+
+> This repository is looking for a maintainer. Please open an issue if you want to help.
+
 Plugin for using the backbone js library with json-rpc instead of the native REST implementation
 
 This Plugin is not actively maintained anymore, PRs will be merged, but no further issues will be resolved.
